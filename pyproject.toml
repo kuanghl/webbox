@@ -1,0 +1,24 @@
+[project]
+name = "babeldoc-webui"
+version = "0.1.0"
+description = "A modern web UI for BabelDOC - PDF document translation tool"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "nicegui>=3.16.0",
+    "babeldoc>=0.6.4",
+]
+
+[project.scripts]
+babeldoc-webui = "main:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+py-modules = ["main"]
+packages = []
