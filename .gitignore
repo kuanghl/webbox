@@ -64,3 +64,12 @@ CLAUDE.md
 .env
 .env.local
 *.local.json
+
+# Ai generated files
+.mcp.json
+.claude
+.cline
+.clinerules
+.nicegui
+.repowise
+.ruff_cache
