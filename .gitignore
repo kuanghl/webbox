@@ -75,3 +75,6 @@ CLAUDE.md
 .ruff_cache
 logs
 refers
+
+# repowise API keys (local)
+.repowise/.env

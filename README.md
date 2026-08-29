@@ -14,5 +14,6 @@ webbox是一个多功能工具箱，支持功能如下：
 正在火热开发中...
 
 ```sh
-
+# repowise初始化
+repowise init --no-workspace --force -y -x "refers/" --model Qwen3.8-27B
 ```
