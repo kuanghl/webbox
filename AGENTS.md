@@ -8,7 +8,7 @@ Adherence to these guidelines ensures clean, maintainable, high-performance, and
 ## 1. Code Style & Documentation (Python)
 
 ### 1.1 Google-Style Docstrings
-All public modules, classes, functions, and methods **must** include Google-style docstrings.
+All public modules, classes, functions, and methods **must** include Google-style docstrings with English.
 
 **Example:**
 ```python
@@ -155,6 +155,7 @@ project/
 │   ├── integration/
 │   └── frontend/                      # Frontend-specific tests
 ├── logs/
+├── docs/
 ├── config/
 │   ├── default.yaml
 │   ├── development.yaml
