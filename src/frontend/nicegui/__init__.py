@@ -1,0 +1,1 @@
+"""NiceGUI web frontend (primary)."""
