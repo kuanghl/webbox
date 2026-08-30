@@ -11,9 +11,12 @@ webbox是一个多功能工具箱，支持功能如下：
 
 ## 2. quick-start
 
-正在火热开发中...
+完整说明见 [docs/quick_start.md](docs/quick_start.md)。
 
 ```sh
-# repowise初始化
-repowise init --no-workspace --force -y -x "refers/" --model Qwen3.8-27B
+uv venv .venv
+uv pip install -e ".[test,textual]"
+.venv/bin/python -m src.frontend.nicegui.app   # 访问 http://127.0.0.1:8080
+.venv/bin/python -m src.frontend.textual.app   # 终端 TUI（或 webbox-tui）
+.venv/bin/python -m pytest tests -q            # 运行测试
 ```
