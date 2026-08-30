@@ -4,9 +4,9 @@ Run with::
 
     python -m src.frontend.nicegui.app --port 8081
 
-or ``webbox-nicegui`` once packaged. The single page hosts three tabs
-(Translate / VRAM / Settings); the header carries language, theme and
-user switchers (see docs/refer-nicegui.md).
+or ``webbox-nicegui`` once packaged. Routes: ``/`` (home), ``/chat``,
+``/agent`` and ``/hosts`` (visual stubs), ``/translate``, ``/vram`` and
+``/settings``.
 
 Bind address/port resolution: CLI flag > ``WEBBOX_HOST``/``WEBBOX_PORT``
 env vars > built-in defaults (see :class:`~src.core.config.AppConfig`).
@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+from pathlib import Path
 
 from nicegui import ui
 
@@ -26,30 +27,20 @@ from ...core.constants import APP_NAME
 from ...core.context import AppContext
 from ...core.logging_setup import setup_logging
 from ...core.utils import check_port_available
-from .pages import settings_page, translate_page, vram_page
-from .components import build_header
+from .pages import (
+    agent_page,
+    chat_page,
+    home_page,
+    hosts_page,
+    settings_page,
+    translate_page,
+    vram_page,
+)
 
 logger = logging.getLogger(__name__)
 
-
-def index_page(ctx: AppContext) -> None:
-    """Render the single-page app with tab navigation.
-
-    Args:
-        ctx: Application context providing services and settings.
-    """
-    build_header(ctx)
-    with ui.tabs().classes("w-full") as tabs:
-        tab_tr = ui.tab(i18n.tr("nav.translate"), icon="translate")
-        tab_vr = ui.tab(i18n.tr("nav.vram"), icon="memory")
-        tab_st = ui.tab(i18n.tr("nav.settings"), icon="settings")
-    with ui.tab_panels(tabs, value=tab_tr).classes("w-full"):
-        with ui.tab_panel(tab_tr):
-            translate_page.build(ctx)
-        with ui.tab_panel(tab_vr):
-            vram_page.build(ctx)
-        with ui.tab_panel(tab_st):
-            settings_page.build(ctx)
+#: OpenPencil design tokens + component classes.
+_THEME_CSS = Path(__file__).with_name("theme.css").read_text(encoding="utf-8")
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -89,11 +80,42 @@ def main() -> None:
 
     theme_mod.register_applier("nicegui", lambda t: _set_dark(t == "dark"))
     _set_dark(settings.theme == "dark")
+    ui.add_css(_THEME_CSS, shared=True)
 
     @ui.page("/")
-    def index() -> None:
-        """Root page: the whole app in tabs."""
-        index_page(ctx)
+    def home() -> None:
+        """Home: module dock, card grid and rotating zone."""
+        home_page.build(ctx)
+
+    @ui.page("/chat")
+    def chat() -> None:
+        """Chat module (visual stub)."""
+        chat_page.build(ctx)
+
+    @ui.page("/agent")
+    def agent() -> None:
+        """Agent/ACP module (visual stub)."""
+        agent_page.build(ctx)
+
+    @ui.page("/hosts")
+    def hosts() -> None:
+        """Host/SSH module (visual stub)."""
+        hosts_page.build(ctx)
+
+    @ui.page("/translate")
+    def translate() -> None:
+        """PDF translation module (BabelDOC)."""
+        translate_page.build(ctx)
+
+    @ui.page("/vram")
+    def vram() -> None:
+        """VRAM calculator module."""
+        vram_page.build(ctx)
+
+    @ui.page("/settings")
+    def settings_route() -> None:
+        """Settings module."""
+        settings_page.build(ctx)
 
     if not check_port_available(config.host, config.port):
         logger.error(

@@ -1,0 +1,387 @@
+/* WebBox design tokens — mirrors the OpenPencil "webbox" dark dashboard spec. */
+
+:root {
+  --wb-bg: #0a0a0b;
+  --wb-bg-home: #0b0f17;
+  --wb-bg-zone: #0e1420;
+  --wb-panel: #111113;
+  --wb-panel-2: #17171a;
+  --wb-panel-3: #0d0d0f;
+  --wb-border: #26262b;
+  --wb-border-2: #3f3f46;
+  --wb-accent: #6d8dff;
+  --wb-accent-bright: #4f8cff;
+  --wb-text: #e4e4e7;
+  --wb-text-dim: #a1a1aa;
+  --wb-text-faint: #71717a;
+  --wb-green: #34d399;
+  --wb-amber: #fbbf24;
+  --wb-red: #f87171;
+  --wb-home-card: #111827;
+  --wb-home-border: #232d3f;
+  --wb-home-text: #e6edf3;
+  --wb-home-dim: #8b949e;
+  --wb-home-tile: #1a2234;
+}
+
+/* Page frame */
+.wb-page {
+  height: 100vh;
+  overflow: hidden;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+}
+
+/* Module top bar */
+.wb-topbar {
+  height: 64px;
+  flex: 0 0 64px;
+  padding: 0 20px;
+  background: var(--wb-panel);
+  border-bottom: 1px solid var(--wb-border);
+}
+.wb-back {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px;
+  background: var(--wb-panel-2) !important;
+  border: 1px solid var(--wb-border);
+  color: var(--wb-text-dim) !important;
+}
+.wb-back:hover { border-color: var(--wb-border-2) !important; color: var(--wb-text) !important; }
+.wb-topbar-title { font-size: 13px; font-weight: 600; color: var(--wb-text); }
+
+/* Buttons */
+.wb-btn-primary {
+  background: var(--wb-accent) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px;
+  min-height: 34px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: none !important;
+}
+.wb-btn-primary:hover { background: #5f80f0 !important; }
+.wb-btn-primary:disabled { background: #3a4a7a !important; color: #9aa4c0 !important; }
+.wb-btn-ghost {
+  background: transparent !important;
+  color: var(--wb-text-dim) !important;
+  border: 1px solid var(--wb-border) !important;
+  border-radius: 8px;
+  min-height: 34px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: none !important;
+}
+.wb-btn-ghost:hover { border-color: var(--wb-border-2) !important; color: var(--wb-text) !important; }
+.wb-btn-ghost:disabled { opacity: 0.4; }
+
+/* Body: sidebar + main */
+.wb-body { flex: 1 1 auto; min-height: 0; }
+.wb-sidebar {
+  width: 260px;
+  flex: 0 0 260px;
+  padding: 16px;
+  background: var(--wb-panel);
+  border-right: 1px solid var(--wb-border);
+  overflow-y: auto;
+}
+.wb-side-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--wb-text-faint);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.wb-side-item {
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.wb-side-item:hover { background: rgba(255, 255, 255, 0.03); }
+.wb-side-item.active { background: var(--wb-panel-2); border-color: var(--wb-border); }
+.wb-side-name {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--wb-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-side-item.active .wb-side-name { font-weight: 600; color: var(--wb-text); }
+.wb-side-sub {
+  font-size: 10.5px;
+  color: var(--wb-text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-side-item.active .wb-side-sub { color: var(--wb-text-dim); }
+
+/* Main column */
+.wb-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--wb-bg);
+}
+
+/* Status strip */
+.wb-status {
+  height: 56px;
+  flex: 0 0 56px;
+  padding: 0 28px;
+  background: var(--wb-panel);
+  border-bottom: 1px solid var(--wb-border);
+}
+.wb-status-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 10px; }
+.wb-status-text { font-size: 12px; font-weight: 600; color: var(--wb-text); }
+.wb-status-meta { font-size: 10.5px; color: var(--wb-text-faint); }
+
+/* Workspace */
+.wb-workspace {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+/* Panels */
+.wb-panel {
+  background: var(--wb-panel);
+  border: 1px solid var(--wb-border);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+.wb-panel-head { margin-bottom: 8px; }
+.wb-panel-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--wb-text-faint);
+  letter-spacing: 0.08em;
+}
+
+/* Chips */
+.wb-chip {
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border-radius: 4px;
+  background: var(--wb-panel-2);
+  border: 1px solid var(--wb-border);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--wb-text-dim);
+}
+
+/* Big value + fits note */
+.wb-big-value { font-size: 28px; font-weight: 700; color: var(--wb-text); line-height: 1.2; }
+.wb-fits-note { font-size: 10.5px; color: var(--wb-green); }
+.wb-fits-note.over { color: var(--wb-amber); }
+
+/* Detail rows */
+.wb-detail-row { padding: 2px 0; }
+.wb-detail-label { font-size: 11px; color: var(--wb-text-dim); }
+.wb-detail-value { font-size: 11px; font-weight: 600; color: var(--wb-text); }
+.wb-detail-row.total .wb-detail-label { font-weight: 700; color: var(--wb-text); }
+.wb-detail-row.total .wb-detail-value { font-weight: 700; color: var(--wb-accent); }
+
+/* Stack / progress bars */
+.wb-track { height: 10px; border-radius: 5px; background: var(--wb-panel-3); overflow: hidden; }
+.wb-track.thin { height: 6px; border-radius: 3px; }
+.wb-fill { height: 100%; border-radius: inherit; }
+
+/* Legend */
+.wb-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 8px; }
+.wb-legend-text { font-size: 10px; color: var(--wb-text-faint); }
+
+/* Input bar */
+.wb-inputbar {
+  flex: 0 0 auto;
+  padding: 14px 20px;
+  background: var(--wb-panel);
+  border-top: 1px solid var(--wb-border);
+}
+.wb-inputbox {
+  min-height: 56px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--wb-panel-2);
+  border: 1px solid var(--wb-border);
+  position: relative;
+}
+.wb-inputbox-prefix { color: var(--wb-accent); font-size: 14px; }
+.wb-inputbox-hint { font-size: 12.5px; color: var(--wb-text-faint); }
+.wb-meta { font-size: 10.5px; color: var(--wb-text-faint); }
+
+/* Misc */
+.wb-sep { border-color: var(--wb-border) !important; margin: 4px 0; }
+.wb-err { font-size: 11px; color: var(--wb-red); word-break: break-word; }
+.wb-note { font-size: 10.5px; color: var(--wb-text-faint); }
+.wb-code {
+  background: var(--wb-panel-3) !important;
+  color: var(--wb-text-dim) !important;
+  font-size: 11px !important;
+  border-radius: 6px;
+  padding: 6px 10px !important;
+}
+.wb-gpu-name { font-size: 11px; font-weight: 600; color: var(--wb-text); }
+.wb-gpu-used { font-size: 11px; color: var(--wb-text-dim); }
+.wb-field { font-size: 12px; }
+
+/* Empty / stub state */
+.wb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  padding: 24px;
+}
+.wb-empty-icon { font-size: 40px; color: var(--wb-text-faint); opacity: 0.6; }
+.wb-empty-title { font-size: 14px; font-weight: 600; color: var(--wb-text-dim); }
+.wb-empty-desc { font-size: 12px; color: var(--wb-text-faint); max-width: 420px; text-align: center; }
+
+/* Terminal */
+.wb-terminal {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 16px 28px;
+  border-radius: 10px;
+  background: var(--wb-panel-3);
+  border: 1px solid var(--wb-border);
+  padding: 14px 16px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 12px;
+  color: var(--wb-text-dim);
+  overflow-y: auto;
+}
+
+/* Home */
+.wb-home {
+  height: 100vh;
+  overflow: hidden;
+  background: var(--wb-bg-home);
+  color: var(--wb-home-text);
+  display: flex;
+  flex-direction: column;
+}
+.wb-dock {
+  height: 76px;
+  flex: 0 0 76px;
+  padding: 16px 28px;
+  background: var(--wb-bg-zone);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+.wb-dock-tile {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  cursor: pointer;
+  background: var(--wb-home-tile);
+  border: 1px solid var(--wb-home-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, border-color 0.1s ease;
+}
+.wb-dock-tile:hover { transform: translateY(-2px); border-color: #34405a; }
+.wb-home-zone {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 24px 28px 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.wb-home-title { font-size: 20px; font-weight: 600; color: var(--wb-home-text); }
+.wb-home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-content: stretch;
+}
+.wb-home-card {
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  background: var(--wb-home-card);
+  border: 1px solid var(--wb-home-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.1s ease, transform 0.1s ease;
+}
+.wb-home-card:hover { border-color: #34405a; transform: translateY(-1px); }
+.wb-home-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wb-home-card-name { font-size: 18px; font-weight: 600; color: var(--wb-home-text); }
+.wb-home-card-desc { font-size: 13px; line-height: 1.4; color: var(--wb-home-dim); }
+.wb-open-btn {
+  width: 88px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--wb-home-tile);
+  border: 1px solid var(--wb-home-border);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--wb-accent-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wb-open-btn:hover { border-color: #34405a; }
+.wb-rotate {
+  height: 104px;
+  flex: 0 0 104px;
+  padding: 14px 28px;
+  background: var(--wb-bg-zone);
+}
+.wb-pullbar { width: 6px; height: 48px; border-radius: 3px; background: var(--wb-home-border); flex: 0 0 6px; }
+.wb-mid-tile {
+  width: 128px;
+  height: 72px;
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  background: var(--wb-home-card);
+  border: 1px solid var(--wb-home-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.1s ease;
+}
+.wb-mid-tile:hover { border-color: #34405a; }
+.wb-mid-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--wb-home-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wb-rotate-hint { font-size: 11px; color: var(--wb-home-dim); }
+
+/* Full-bleed reset: strip NiceGUI's default page padding so .wb-page
+   (100vh) owns the whole viewport. */
+#q-page-container,
+.q-page {
+  padding: 0 !important;
+}
+

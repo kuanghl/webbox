@@ -9,6 +9,15 @@ from __future__ import annotations
 APP_NAME: str = "BabelDOC WebBox"
 APP_TAGLINE: str = "PDF translation & LLM deployment toolkit"
 
+#: Frontend routes (NiceGUI pages; the TUI mirrors them as screens).
+ROUTE_HOME: str = "/"
+ROUTE_CHAT: str = "/chat"
+ROUTE_AGENT: str = "/agent"
+ROUTE_HOSTS: str = "/hosts"
+ROUTE_TRANSLATE: str = "/translate"
+ROUTE_VRAM: str = "/vram"
+ROUTE_SETTINGS: str = "/settings"
+
 #: UI interface languages supported by ``src.core.i18n``.
 UI_LANGUAGES: dict[str, str] = {
     "en": "English",
