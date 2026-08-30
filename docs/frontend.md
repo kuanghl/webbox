@@ -1,5 +1,18 @@
 # 前端设计需求
 
+## 支持模块
+
+- setting
+    - providers 
+    - theme
+    - zh/en
+    - log
+- chat
+- agent with acp
+- babeldoc for pdf translate
+- vram for llm and hardware
+- host environments manager/ssh xterm
+
 ## 前端框架
 
 1. 同时支持nicegui>=3.16.0 、textual >= 8.2.8 、 flet 0.86.5前端设计，基于不同的指令启动不同前端
