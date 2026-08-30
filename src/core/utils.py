@@ -8,7 +8,7 @@ import socket
 def check_port_available(host: str, port: int) -> bool:
     """Return whether a TCP port can be bound right now.
 
-    Used by the web frontends (NiceGUI/Flet) to fail fast with a clear
+    Used by the web frontend (NiceGUI) to fail fast with a clear
     hint instead of uvicorn's raw ``address already in use`` error.
 
     Args:

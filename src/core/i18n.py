@@ -1,6 +1,6 @@
 """Central i18n store (English / Chinese).
 
-All UI strings live here so the three frontends (NiceGUI, Textual, Flet)
+All UI strings live here so the two frontends (NiceGUI, Textual)
 share one source of truth. Frontends call :func:`tr` with a dotted key;
 the active language is set via :func:`set_language` (usually from the
 persisted user settings on startup).

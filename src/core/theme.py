@@ -20,7 +20,7 @@ def register_applier(framework: str, applier: Callable[[str], None]) -> None:
     """Register the theme applier for a frontend framework.
 
     Args:
-        framework: Frontend name (``nicegui``/``textual``/``flet``).
+        framework: Frontend name (``nicegui``/``textual``).
         applier: Callable receiving the theme name to apply.
     """
     _APPLIERS[framework] = applier

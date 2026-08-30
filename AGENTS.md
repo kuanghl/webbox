@@ -1,6 +1,6 @@
 # Agent Guidelines for Python & Full-Stack Development
 
-This document defines the coding standards, architectural principles, and best practices that **Cline** must follow when generating code for both **Python backend** and **frontend (NiceGUI, Textual, Flet)**.  
+This document defines the coding standards, architectural principles, and best practices that **Cline** must follow when generating code for both **Python backend** and **frontend (NiceGUI, Textual)**.  
 Adherence to these guidelines ensures clean, maintainable, high-performance, and scalable applications across the entire stack.
 
 ---
@@ -136,16 +136,11 @@ project/
 │   │   │   ├── pages/
 │   │   │   ├── components/
 │   │   │   └── routes.py
-│   │   ├── textual/                   # Textual >=8.2.8 TUI implementation
-│   │   │   ├── __init__.py
-│   │   │   ├── app.py
-│   │   │   ├── screens/
-│   │   │   └── widgets/
-│   │   └── flet/                      # Flet 0.86.5 implementation
+│   │   └── textual/                   # Textual >=8.2.8 TUI implementation
 │   │       ├── __init__.py
 │   │       ├── app.py
-│   │       ├── views/
-│   │       └── controls/
+│   │       ├── screens/
+│   │       └── widgets/
 │   ├── backend/                       # (Optional) If API server separate
 │   │   ├── __init__.py
 │   │   └── api.py
@@ -164,8 +159,7 @@ project/
 ├── requirements/
 │   ├── base.txt
 │   ├── nicegui.txt
-│   ├── textual.txt
-│   └── flet.txt
+│   └── textual.txt
 ├── pyproject.toml
 └── README.md
 ```
@@ -183,14 +177,14 @@ project/
 - Support environment variable overrides for both.
 
 ### 3.4 Frontend Framework Integration
-- **Supported Frameworks**: NiceGUI (>=3.16.0), Textual (>=8.2.8), Flet (>=0.86.5).
+- **Supported Frameworks**: NiceGUI (>=3.16.0), Textual (>=8.2.8).
 - Each frontend is independent and launchable via a dedicated command (e.g., `python -m src.frontend.nicegui.app`, `textual run src.frontend.textual.app`).
 - All frontend implementations must consume the same core business logic and data via the `core` and `modules` layers.
 - Communication between frontend and backend modules:
   - Use **dependency injection** to pass service instances.
   - Avoid direct frontend-to-module coupling; always go through interfaces defined in `modules/interfaces.py`.
 - Each frontend must be **componentized** with reusable widgets/views.
-- Responsive design is mandatory for NiceGUI and Flet; Textual should follow adaptive layout patterns.
+- Responsive design is mandatory for NiceGUI; Textual should follow adaptive layout patterns.
 
 ### 3.5 Frontend Feature Requirements
 All frontend implementations must support:
@@ -224,7 +218,7 @@ All frontend implementations must support:
 
 ## 6. Testing & Documentation
 
-- Write unit tests for all core logic (using `pytest` for backend, and appropriate test runners for frontend – e.g., `pytest-nicegui`, `pytest-textual`, or `flet.test`).
+- Write unit tests for all core logic (using `pytest` for backend, and appropriate test runners for frontend – e.g., `pytest-nicegui`, `pytest-textual`).
 - Coverage ≥80%.
 - Maintain a clear `README.md` with setup and run instructions for each frontend.
 - Generate API docs using `pdoc` or `Sphinx`.
@@ -320,9 +314,9 @@ Before finalizing code, ensure:
 - [ ] All reusable components are modular and placed in `frontend/core/components.py`.
 - [ ] Language, theme, and user settings are managed via a central store.
 - [ ] The frontend supports at least language switching (i18n) and theme toggle.
-- [ ] The implementation is responsive (NiceGUI/Flet) or adaptive (Textual).
+- [ ] The implementation is responsive (NiceGUI) or adaptive (Textual).
 - [ ] Frontend communicates with backend only through core/module interfaces (no direct coupling).
-- [ ] Each frontend (NiceGUI, Textual, Flet) is independently launchable.
+- [ ] Each frontend (NiceGUI, Textual) is independently launchable.
 - [ ] Preferences (language, theme) are persisted across sessions.
 
 ---

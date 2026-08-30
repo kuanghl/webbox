@@ -1,1 +1,1 @@
-"""Frontend implementations (NiceGUI / Textual / Flet)."""
+"""Frontend implementations (NiceGUI / Textual)."""

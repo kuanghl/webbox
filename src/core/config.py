@@ -16,7 +16,7 @@ class AppConfig(BaseSettings):
     """Runtime configuration for all webbox frontends.
 
     Attributes:
-        host: Bind address for web frontends (NiceGUI/Flet).
+        host: Bind address for the web frontend (NiceGUI).
         port: Bind port for web frontends.
         log_level: Root log level name (DEBUG..CRITICAL).
         log_dir: Directory for daily-rotated log files.

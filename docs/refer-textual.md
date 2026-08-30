@@ -7,7 +7,7 @@
 
 Textual 是 Python 终端 UI（TUI）框架：`App` + `Screen` + `Widget` 组件树，
 CSS（`.tcss`）布局，**reactive 属性**驱动 UI 刷新，`Worker` 跑后台任务。
-webbox 的 TUI 前端采用它，与 NiceGUI/Flet 共享 `core` + `modules` 层。
+webbox 的 TUI 前端采用它，与 NiceGUI 共享 `core` + `modules` 层。
 
 ## 2. 应用入口
 

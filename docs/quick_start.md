@@ -10,7 +10,6 @@ uv venv .venv
 uv pip install -e ".[test]"          # 核心依赖 + NiceGUI 前端 + pytest
 # 可选前端：
 uv pip install -e ".[textual]"       # Textual 终端 TUI
-uv pip install -e ".[flet]"          # Flet（尚未实现）
 ```
 
 核心依赖包含 `nicegui`、`babeldoc`、`pydantic-settings`、`httpx`。
