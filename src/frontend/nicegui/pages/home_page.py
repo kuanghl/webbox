@@ -15,9 +15,10 @@ def build(ctx: AppContext) -> None:
         ctx: Application context.
     """
     with ui.column().classes("wb-home w-full"):
-        wb_home_dock()
+        wb_home_dock(ctx)
         with ui.column().classes("wb-home-zone w-full"):
             with ui.row().classes("wb-home-grid w-full"):
                 for m in MODULES:
                     wb_home_card(m)
-        wb_rotating_zone()
+        if ctx.features.any_entered():
+            wb_rotating_zone()

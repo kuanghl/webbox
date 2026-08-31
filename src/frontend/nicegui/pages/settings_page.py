@@ -27,6 +27,7 @@ def build(ctx: AppContext) -> None:
     Args:
         ctx: Application context.
     """
+    ctx.features.mark_entered("settings")
     settings = ctx.settings.load()
 
     with ui.column().classes("wb-page w-full"):

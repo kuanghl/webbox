@@ -13,6 +13,7 @@ def build(ctx: AppContext) -> None:
     Args:
         ctx: Application context.
     """
+    ctx.features.mark_entered("hosts")
     wb_stub_shell(
         title=i18n.tr("hosts.title_bar"),
         side_label=i18n.tr("hosts.hosts").upper(),

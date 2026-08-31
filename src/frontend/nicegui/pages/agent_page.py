@@ -13,6 +13,7 @@ def build(ctx: AppContext) -> None:
     Args:
         ctx: Application context.
     """
+    ctx.features.mark_entered("agent")
     wb_stub_shell(
         title=i18n.tr("agent.title_bar"),
         side_label=i18n.tr("agent.agents").upper(),

@@ -67,6 +67,7 @@ def build(ctx: AppContext) -> None:
     Args:
         ctx: Application context.
     """
+    ctx.features.mark_entered("translate")
     settings = ctx.settings.load()
     state = TaskState()
     pdf_path: dict[str, str] = {}

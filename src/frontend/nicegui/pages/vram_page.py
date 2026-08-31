@@ -87,6 +87,7 @@ def build(ctx: AppContext) -> None:
     Args:
         ctx: Application context (provides the vram service).
     """
+    ctx.features.mark_entered("vram")
     service: VramService = ctx.vram
     model_state: dict[str, str] = {"value": "Qwen2.5-7B"}
     result_area = ui.column().classes("w-full gap-2")

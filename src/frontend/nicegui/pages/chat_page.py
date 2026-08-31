@@ -13,6 +13,7 @@ def build(ctx: AppContext) -> None:
     Args:
         ctx: Application context.
     """
+    ctx.features.mark_entered("chat")
     wb_stub_shell(
         title=i18n.tr("chat.title_bar"),
         side_label=i18n.tr("chat.conversations").upper(),

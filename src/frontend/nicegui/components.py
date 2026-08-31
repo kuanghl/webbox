@@ -16,6 +16,7 @@ from nicegui import ui
 from ...core import i18n
 from ...core import theme as theme_mod
 from ...core.constants import (
+    APP_NAME,
     ROUTE_AGENT,
     ROUTE_CHAT,
     ROUTE_HOSTS,
@@ -358,14 +359,27 @@ def wb_empty(icon: str, title: str, desc: str) -> None:
 # -- home ---------------------------------------------------------------------
 
 
-def wb_home_dock() -> None:
-    """Persistent top dock with one tile per module."""
-    with ui.row().classes("wb-dock items-center justify-center gap-3.5 no-wrap"):
-        for m in MODULES:
-            with ui.element("div").classes("wb-dock-tile") as tile:
-                ui.icon(m["icon"]).style(f"color:{m['color']};font-size:24px")
-            tile.tooltip(i18n.tr(f"home.card.{m['key']}.name"))
-            tile.on("click", lambda e, r=m["route"]: ui.navigate.to(r))
+def wb_home_dock(ctx: AppContext) -> None:
+    """Persistent top dock: brand, module tiles and the settings switchers.
+
+    The dock is the home page's header. It shows the app brand on the left,
+    the module tiles in the centre and the language/theme/user switchers on
+    the right (see ``wb_switchers``). Each tile is a rounded square with the
+    module icon; clicking navigates to the module route.
+
+    Args:
+        ctx: Application context (drives the language/theme/user switchers).
+    """
+    with ui.row().classes("wb-dock items-center gap-3.5 no-wrap"):
+        ui.label(APP_NAME).classes("wb-dock-brand")
+        with ui.row().classes("wb-dock-tiles items-center gap-3.5 no-wrap"):
+            for m in MODULES:
+                with ui.element("div").classes("wb-dock-tile") as tile:
+                    ui.icon(m["icon"]).style(f"color:{m['color']};font-size:24px")
+                tile.tooltip(i18n.tr(f"home.card.{m['key']}.name"))
+                tile.on("click", lambda e, r=m["route"]: ui.navigate.to(r))
+        with ui.row().classes("wb-switchers items-center gap-2 no-wrap"):
+            wb_switchers(ctx)
 
 
 def wb_home_card(m: dict[str, Any]) -> None:
@@ -388,7 +402,7 @@ def wb_home_card(m: dict[str, Any]) -> None:
 
 def wb_rotating_zone() -> None:
     """Bottom carousel strip with mini module tiles."""
-    with ui.row().classes("wb-rotate items-center gap-3 no-wrap"):
+    with ui.row().classes("wb-rotate items-center gap-3 no-wrap").mark("wb-rotate"):
         ui.element("div").classes("wb-pullbar")
         for m in MODULES:
             with ui.column().classes("wb-mid-tile") as tile:
@@ -423,7 +437,7 @@ def wb_switchers(ctx: AppContext) -> None:
     ui.select(
         options=UI_LANGUAGES, value=settings.language, on_change=switch_language,
         with_input=False,
-    ).classes("w-28").props("dense outlined")
+    ).classes("w-28").props("dense outlined").mark("wb-lang")
 
     def switch_theme(e) -> None:
         s = ctx.settings.load()
@@ -435,7 +449,7 @@ def wb_switchers(ctx: AppContext) -> None:
     ui.select(
         options=THEMES, value=settings.theme, on_change=switch_theme,
         with_input=False,
-    ).classes("w-24").props("dense outlined")
+    ).classes("w-24").props("dense outlined").mark("wb-theme")
 
     def switch_user(e) -> None:
         ctx.settings.set_active_user(e.value)
@@ -445,7 +459,7 @@ def wb_switchers(ctx: AppContext) -> None:
     ui.select(
         options=list(USERS), value=settings.user, on_change=switch_user,
         with_input=False,
-    ).classes("w-24").props("dense outlined")
+    ).classes("w-24").props("dense outlined").mark("wb-user")
 
 
 # -- stub module shell --------------------------------------------------------
