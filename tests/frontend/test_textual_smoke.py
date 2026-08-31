@@ -7,6 +7,8 @@ user files untouched; no network or babeldoc run is needed.
 """
 
 import asyncio
+import time
+from collections.abc import Callable
 
 import pytest
 from textual.pilot import Pilot
@@ -15,7 +17,7 @@ from textual.widgets import Input, Select, Static, TabbedContent
 from src.core import i18n
 from src.core.config import AppConfig
 from src.core.context import AppContext
-from src.frontend.textual.app import WebboxApp
+from src.frontend.textual.app import SwitcherBar, WebboxApp
 from src.frontend.textual.pages.settings import SettingsPage
 from src.frontend.textual.pages.translate import TranslatePage
 from src.frontend.textual.pages.vram import VramPage
@@ -56,6 +58,28 @@ async def _click_tab(pilot: Pilot, pane_id: str) -> None:
     """Click a tab in the tab bar (tab ids are prefixed by Textual)."""
     await pilot.click(f"#--content-tab-{pane_id}")
     await pilot.pause()
+
+
+async def _wait_for(
+    pilot: Pilot, condition: Callable[[], bool], *, what: str, timeout: float = 5.0
+) -> None:
+    """Poll until ``condition()`` is true so async app work can settle.
+
+    Args:
+        pilot: The Textual test pilot.
+        condition: Zero-arg callable returning True once settled.
+        what: Description used in the failure message.
+        timeout: Maximum seconds to wait before failing.
+
+    Raises:
+        AssertionError: If the condition is not met within ``timeout``.
+    """
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if condition():
+            return
+        await pilot.pause(0.05)
+    raise AssertionError(f"Timed out waiting for {what}")
 
 
 @pytest.mark.asyncio
@@ -203,3 +227,88 @@ async def test_settings_save_switches_language(ctx: AppContext) -> None:
         assert pilot.app.query_one(SettingsPage).query_one("#lang", Select).value == "zh"
         messages = [n.message for n in pilot.app._notifications]
         assert any("设置已保存" in m for m in messages)
+
+
+@pytest.mark.asyncio
+async def test_switcher_bar_present_with_initial_values(ctx: AppContext) -> None:
+    """The header bar renders language/theme/user selects seeded from settings."""
+    async with WebboxApp(ctx).run_test(size=SIZE) as pilot:
+        await pilot.pause()
+        app = pilot.app
+        assert app.query_one(SwitcherBar)
+        assert app.query_one("#sw_lang", Select).value == "en"
+        assert app.query_one("#sw_theme", Select).value == "dark"
+        assert app.query_one("#sw_user", Select).value == "alice"
+        # Each select is preceded by its translated label.
+        for select_id in ("sw_lang", "sw_theme", "sw_user"):
+            assert app.query_one(f"#lbl_{select_id}", Static)
+
+
+@pytest.mark.asyncio
+async def test_switcher_language_change(ctx: AppContext) -> None:
+    """Changing the header language persists, retranslates and rebuilds."""
+    async with WebboxApp(ctx).run_test(size=SIZE) as pilot:
+        await pilot.pause()
+        app = pilot.app
+        original_settings = app.query_one(SettingsPage)
+        app.query_one("#sw_lang", Select).value = "zh"
+        # The settings pane is rebuilt last, so a fresh SettingsPage means
+        # the whole rebuild finished before the app is torn down.
+        await _wait_for(
+            pilot,
+            lambda: (
+                "界面语言" in str(app.query_one("#lbl_sw_lang", Static).render())
+                and app.query_one(SettingsPage) is not original_settings
+            ),
+            what="switcher labels retranslated and pages rebuilt",
+        )
+        assert ctx.settings.load().language == "zh"
+        assert i18n.get_language() == "zh"
+        tabs = app.query_one(TabbedContent)
+        assert tabs.get_tab("pane_translate").label_text == "翻译"
+
+
+@pytest.mark.asyncio
+async def test_switcher_theme_change(ctx: AppContext) -> None:
+    """Changing the header theme persists and applies live with a notice."""
+    async with WebboxApp(ctx).run_test(size=SIZE, notifications=True) as pilot:
+        await pilot.pause()
+        app = pilot.app
+        app.query_one("#sw_theme", Select).value = "light"
+        await _wait_for(
+            pilot, lambda: app.theme == "textual-light", what="theme applied"
+        )
+        assert ctx.settings.load().theme == "light"
+        messages = [n.message for n in app._notifications]
+        assert any("Theme applied" in m for m in messages)
+
+
+@pytest.mark.asyncio
+async def test_switcher_user_change(ctx: AppContext) -> None:
+    """Switching user loads that user's settings and rebuilds the UI."""
+    bob = ctx.settings.load("bob")
+    bob.language = "zh"
+    bob.theme = "light"
+    ctx.settings.save(bob)
+    async with WebboxApp(ctx).run_test(size=SIZE, notifications=True) as pilot:
+        await pilot.pause()
+        app = pilot.app
+        app.query_one("#sw_user", Select).value = "bob"
+        await _wait_for(
+            pilot,
+            lambda: (
+                app.query_one("#sw_lang", Select).value == "zh"
+                and app.query_one("#sw_theme", Select).value == "light"
+                and app.query_one("#sw_user", Select).value == "bob"
+            ),
+            what="switchers synced to bob",
+        )
+        assert ctx.settings.active_user() == "bob"
+        assert ctx.settings.load().language == "zh"
+        assert ctx.settings.load().theme == "light"
+        assert app.theme == "textual-light"
+        assert i18n.get_language() == "zh"
+        tabs = app.query_one(TabbedContent)
+        assert tabs.get_tab("pane_translate").label_text == "翻译"
+        messages = [n.message for n in app._notifications]
+        assert any("Switched to user bob" in m for m in messages)
